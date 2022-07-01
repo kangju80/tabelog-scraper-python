@@ -1,5 +1,6 @@
 # coding: utf-8
 
+
 class Restaurant():
     def __init__(self):
         self.name = "-"
@@ -15,7 +16,7 @@ class Restaurant():
 
     @score.setter
     def score(self, score):
-        if score < 0:
+        if int(score) < 0:
             self.score = score
             return
         else:
