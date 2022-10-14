@@ -1,6 +1,2 @@
 https://tabelog.com/oita/A4404/A440401/44006115/
 https://tabelog.com/oita/A4402/A440202/44012162/
-
-import datetime
-dt_now = datetime.datetime.now()
-' + dt_now.strftime('%Y%m%d%H%M%S') + '

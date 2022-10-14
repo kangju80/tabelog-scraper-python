@@ -4,7 +4,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 import csv
-import restaurant 
+import restaurant
 
 
 class TabelogScraper():
@@ -29,10 +29,11 @@ class TabelogScraper():
         except ValueError:
             print("Error occured when extracting html from , from " + url)
             return rest  # htmlが抽出できないとそれ以上解析ができないため、ここで終了する。
-        
+
         # 店名の取得
         try:
-            restaurant_name = self.__extract_text(bs.find(class_='display-name').find('span'))
+            restaurant_name = self.__extract_text(
+                bs.find(class_='display-name').find('span'))
             rest.name = restaurant_name
         except ValueError:
             print("Error occured when extracting restaurant name, from " + url)
@@ -41,12 +42,15 @@ class TabelogScraper():
         try:
             # dtタグの値が 'ジャンル：' であるdlタグを探し、
             # そのdlタグ内で、実際のジャンル名が書かれているタグ(class名が'linktree__parent-target-text')を抽出する。
-            target_dl_tags = bs.find(class_='rdheader-info-data').findAll('dl', {'class':'rdheader-subinfo__item'})
+            target_dl_tags = bs.find(class_='rdheader-info-data').findAll(
+                'dl', {'class': 'rdheader-subinfo__item'})
             for dl_tag in target_dl_tags:
-                dt_tag = self.__extract_text(dl_tag.find('dt', {'class':'rdheader-subinfo__item-title'}))
+                dt_tag = self.__extract_text(dl_tag.find(
+                    'dt', {'class': 'rdheader-subinfo__item-title'}))
                 genre = ""
                 if dt_tag == u'ジャンル：':
-                    genre = self.__extract_text(dl_tag.find(class_='linktree__parent-target-text'))
+                    genre = self.__extract_text(dl_tag.find(
+                        class_='linktree__parent-target-text'))
                     break
             rest.genre = genre
         except ValueError:
@@ -54,7 +58,8 @@ class TabelogScraper():
 
         # 食べログスコアの取得
         try:
-            score = self.__extract_text(bs.find(class_='rdheader-rating__score-val-dtl'))
+            score = self.__extract_text(bs.find(
+                class_='rdheader-rating__score-val-dtl'))
             rest.score = score
         except ValueError:
             print("Error occured when extracting score, from " + url)
@@ -75,7 +80,8 @@ class TabelogScraper():
 
         # 所在地
         try:
-            address = self.__extract_text(bs.find(class_='rstinfo-table__address'))
+            address = self.__extract_text(bs.find(
+                class_='rstinfo-table__address'))
             rest.address = address
         except ValueError:
             print("Error occured when extracting address, from " + url)
@@ -108,9 +114,9 @@ for url in urls:
     time.sleep(1)
 
 # 結果の表示
-with open('C:/Users/kangj/Desktop/tabelog-scraper-python/output.csv', 'w') as f:
+path = 'C:/Users/kangj/Desktop/tabelog-scraper-python/output/out.csv'
+with open(path, 'w') as f:
     writer = csv.writer(f)
     for r in restaurant_list:
         print(r.name + "\t" + r.genre + "\t" + r.address + "\t" + r.url)
         writer.writerow([r.name, r.genre, r.address, r.url])
-
